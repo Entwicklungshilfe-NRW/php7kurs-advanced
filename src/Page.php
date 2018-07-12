@@ -2,8 +2,16 @@
 
 namespace gfu;
 
+use gfu\Db;
+
 class Page
 {
+    private $db;
+    public function __construct()
+    {
+        $this->db = new Db();
+    }
+
     public function getNavigation($path = '../pages/')
     {
         $html = $this->getHtmlForDirectoryPath($path);
@@ -21,7 +29,8 @@ class Page
 
         $possibleDirectories = [
             'pages',
-            'footer'
+            'footer',
+            'admin'
         ];
 
         $isFileFound = false;
@@ -40,6 +49,13 @@ class Page
         require_once $pathToFile;
 
         return $content;
+    }
+
+    private function getAdminContent() {
+        $users = $this->db->con->table('users');
+        $users = $users->select()->get();
+
+        return 'Admin content';
     }
 
     /**
