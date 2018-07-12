@@ -11,15 +11,26 @@ class PageCest
     }
 
     // tests
-    public function getNavigationReturnHtml(UnitTester $I)
+    public function getAdminContentReturnRightHtml(UnitTester $I)
     {
-        $something = Stub::make(
-            $this->fixture,
+        $db = Stub::make(
+            \gfu\Db::class,
             [
-                'getHtmlForDirectoryPath' => 'testify'
+                'getTable' => [
+                    0 => [
+                        'password' => 'testify'
+                    ]
+                ]
             ]
         );
 
-        $I->assertSame('testify', $something->getNavigation());
+        $this->fixture = Stub::make(
+            $this->fixture,
+            [
+                'db' => $db
+            ]
+        );
+
+        $I->assertSame('testify', $this->fixture->getAdminContent());
     }
 }

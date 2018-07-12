@@ -14,7 +14,7 @@ use PDO;
 
 class Db
 {
-    public $con;
+    private $con;
 
     public function __construct()
     {
@@ -31,6 +31,12 @@ class Db
                 return $statement->fetchAll(\PDO::FETCH_ASSOC);
             }
         });
+    }
+
+    public function getTable($table)
+    {
+        $table = $this->con->table($table);
+        return $table->select()->get();
     }
 
 }
