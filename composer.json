@@ -1,0 +1,21 @@
+{
+    "name": "gfu/teilnehmer-advanced",
+    "description": "Kurs mit OOP",
+    "require": {
+        "clancats/hydrahon": "^1.1"
+    },
+    "require-dev": {
+        "codeception/codeception": "^2.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "gfu\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Roland Golla",
+            "email": "rolandgolla@gmail.com"
+        }
+    ]
+}
