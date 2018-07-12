@@ -51,18 +51,18 @@ class Page
         return $content;
     }
 
-    private function getAdminContent() {
+    protected function getAdminContent() {
         $users = $this->db->con->table('users');
         $users = $users->select()->get();
 
-        return 'Admin content';
+        return $users[0]['bodytext'];
     }
 
     /**
      * @param $path
      * @return string
      */
-    private function getHtmlForDirectoryPath($path)
+    protected function getHtmlForDirectoryPath($path)
     {
         $fileExtension = '.php';
         $files = glob($path . '*' . $fileExtension);
