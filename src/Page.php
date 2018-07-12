@@ -4,9 +4,50 @@ namespace gfu;
 
 class Page
 {
-    public function getNavigation()
+    public function getNavigation($path = '../pages/')
     {
-        $path = '../pages/';
+        $html = $this->getHtmlForDirectoryPath($path);
+
+        return $html;
+    }
+
+    public function getContent()
+    {
+        $fileName = 'start';
+
+        if (isset($_GET['page'])) {
+            $fileName = $_GET['page'];
+        }
+
+        $possibleDirectories = [
+            'pages',
+            'footer'
+        ];
+
+        $isFileFound = false;
+        foreach ($possibleDirectories as $possibleDirectory) {
+            $pathToFile = '../' . $possibleDirectory . '/' . $fileName . '.php';
+            if(is_file($pathToFile)) {
+                $isFileFound = true;
+                break;
+            }
+        }
+
+        if(!$isFileFound) {
+            $pathToFile = '../pages/404.php';
+        }
+
+        require_once $pathToFile;
+
+        return $content;
+    }
+
+    /**
+     * @param $path
+     * @return string
+     */
+    private function getHtmlForDirectoryPath($path)
+    {
         $fileExtension = '.php';
         $files = glob($path . '*' . $fileExtension);
 
@@ -23,32 +64,12 @@ class Page
             $link = '/teilnehmer-advanced/public/?page=' . $name;
             $display = ucfirst($name);
 
-            if($name !== '404') {
+            if ($name !== '404') {
                 $html .= '<li><a href="' . $link . '">' . $display . '</a></li>';
             }
         }
 
         $html .= '</ul>';
-
         return $html;
-    }
-
-    public function getContent()
-    {
-        $fileName = 'start';
-
-        if (isset($_GET['page'])) {
-            $fileName = $_GET['page'];
-        }
-
-        $pathToFile = '../pages/' . $fileName . '.php';
-
-        if(!is_file($pathToFile)) {
-            $pathToFile = '../pages/404.php';
-        }
-
-        require_once $pathToFile;
-
-        return $content;
     }
 }

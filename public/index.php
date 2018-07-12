@@ -6,6 +6,7 @@ $page = new \gfu\Page();
 
 $content = $page->getContent();
 $navigation = $page->getNavigation();
+$footerNavigation = $page->getNavigation('../footer/');
 ?>
 
 <html>
@@ -16,13 +17,19 @@ $navigation = $page->getNavigation();
     <nav>
         <?= $navigation ?>
     </nav>
-        <div class="content">
-            <h1>
-                <?= $content['headline'] ?>
-            </h1>
-            <p>
-                <?= $content['bodytext'] ?>
-            </p>
-        </div>
+    <div class="content">
+        <h1>
+            <?= $content['headline'] ?>
+        </h1>
+        <p>
+            <?= $content['bodytext'] ?>
+        </p>
+    </div>
+    <footer>
+        <h4>Footer</h4>
+        <p>
+            <?= $footerNavigation ?>
+        </p>
+    </footer>
     </body>
 </html>
