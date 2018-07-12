@@ -4,7 +4,8 @@ namespace gfu;
 
 class Page
 {
-    public function getNavigation() {
+    public function getNavigation()
+    {
         $path = '../pages/';
         $fileExtension = '.php';
         $files = glob($path . '*' . $fileExtension);
@@ -22,7 +23,9 @@ class Page
             $link = '/teilnehmer-advanced/public/?page=' . $name;
             $display = ucfirst($name);
 
-            $html .= '<li><a href="' . $link . '">' . $display . '</a></li>';
+            if($name !== '404') {
+                $html .= '<li><a href="' . $link . '">' . $display . '</a></li>';
+            }
         }
 
         $html .= '</ul>';
@@ -32,7 +35,19 @@ class Page
 
     public function getContent()
     {
-        require_once '../pages/start.php';
+        $fileName = 'start';
+
+        if (isset($_GET['page'])) {
+            $fileName = $_GET['page'];
+        }
+
+        $pathToFile = '../pages/' . $fileName . '.php';
+
+        if(!is_file($pathToFile)) {
+            $pathToFile = '../pages/404.php';
+        }
+
+        require_once $pathToFile;
 
         return $content;
     }
