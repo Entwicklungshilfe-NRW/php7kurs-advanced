@@ -52,9 +52,35 @@ class Page
     }
 
     private function getAdminContent() {
-        $users = $this->db->getTable('users');
+        if(isset($_POST['username'])) {
+            $username = $_POST['username'];
+            $password = $_POST['password'];
 
-        return 'Admin content';
+            // Input validation
+
+            // Edit case
+            if(isset($_POST['id'])) {
+                $id = $_POST['id'];
+
+                $params = [
+                    'table' => 'users',
+                    'values' => [
+                        'id' => $id,
+                        'username' => $username,
+                        'password' => $password
+                    ]
+                ];
+
+                $this->db->updateTable($params);
+            }
+            // Add case
+
+            // Error handling
+        }
+
+        $html = $this->getHtmlForAdminForm();
+
+        return $html;
     }
 
     /**
@@ -86,5 +112,35 @@ class Page
 
         $html .= '</ul>';
         return $html;
+    }
+
+    /**
+     * @param $users
+     * @return string
+     */
+    private function getHtmlForAdminForm()
+    {
+        $users = $this->db->getTable('users');
+        $html = '';
+        $html .= '<h2>Edit Users</h2>';
+        foreach ($users as $user) {
+            $html .= '<form action="" method="post">';
+            $html .= '<label for="username">Username</label>';
+            $html .= '<input type="text" name="username" id="username" value="' . $user['username'] . '">';
+            $html .= '<label for="password">Password</label>';
+            $html .= '<input type="password" name="password" id="password" value="' . $user['password'] . '">';
+            $html .= '<input type="hidden" name="id" value="' . $user['id'] . '">';
+            $html .= '<input type="submit" value="edit">';
+            $html .= '</form>';
+        }
+        return $html;
+//            <h2>Add User</h2>
+//            <form action="" method="post">
+//                <label for="username">Username</label>
+//                <input type="text" name="username" id="username">
+//                <label for="password">Password</label>
+//                <input type="password" name="password" id="password">
+//                <input type="submit" value="add">
+//            </form>
     }
 }

@@ -38,4 +38,18 @@ class Db
         return $table->select()->get();
     }
 
+    public function updateTable($params) {
+
+        foreach ($params['values'] as $key => $value) {
+            if($key === 'id') {
+                continue;
+            }
+            $table = $this->con->table($params['table']);
+            $table->update()
+                  ->set($key, $value)
+                  ->where('id', $params['values']['id'])
+                  ->execute();
+        }
+    }
+
 }
