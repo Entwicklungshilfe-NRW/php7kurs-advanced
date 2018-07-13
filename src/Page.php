@@ -52,8 +52,7 @@ class Page
     }
 
     private function getAdminContent() {
-        $users = $this->db->con->table('users');
-        $users = $users->select()->get();
+        $users = $this->db->getTable('users');
 
         return 'Admin content';
     }

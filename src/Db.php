@@ -14,12 +14,11 @@ use PDO;
 
 class Db
 {
-    public $con;
+    private $con;
 
     public function __construct()
     {
         $connection = new PDO('mysql:host=localhost;dbname=advanced', 'root', 'root');
-
         $this->con = new Builder('mysql', function($query, $queryString, $queryParameters) use ($connection)
         {
             $statement = $connection->prepare($queryString);
@@ -31,6 +30,12 @@ class Db
                 return $statement->fetchAll(\PDO::FETCH_ASSOC);
             }
         });
+    }
+
+    public function getTable($tablename)
+    {
+        $table = $this->con->table($tablename);
+        return $table->select()->get();
     }
 
 }
